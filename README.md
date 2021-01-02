@@ -20,7 +20,7 @@ This package is not tested for production and is still in development. It will
 remain on Github only until it is ready to be published.
 
 ```
-pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9000
+pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9000#egg=appyrition
 ```
 
 ## Initialize
