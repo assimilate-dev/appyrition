@@ -4,14 +4,15 @@ API Client for the Ghost platform
 This module provides a Python API Client for the Ghost content platform:
 https://ghost.org/
 
-It provides a set of functions to interact with the Ghost Admin API endpoints
-which allow publishing and updating posts.
+It provides a set of functions to interact with the [Ghost Admin API
+endpoints](https://ghost.org/docs/admin-api/#endpoints) which allow publishing
+and updating posts.
 
 The goal is to allow developers to create and track posts using local markdown
-and git and deploy to Ghost without copying and pasting into the Ghost editor.
+and git then deploy to Ghost without copying and pasting into the Ghost editor.
 
-Please refer to the documentation provided in the README.md, which can be found
-at the Assimilate Dev Github page: https://github.com/assimilate-dev/appyrition
+This module is tested only against V3 of the [Ghost Admin
+API](https://ghost.org/docs/faq/api-versioning/).
 
 ## Installation
 
@@ -19,13 +20,13 @@ This package is not tested for production and is still in development. It will
 remain on Github only until it is ready to be published.
 
 ```
-pip install -e git://github.com/assimilate-dev/appyrition.git@{ tag name }
+pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9000
 ```
 
 ## Initialize
 
-Initialize using the baseline information about your instance including a
-`client_id` and `client_secret` creating using
+Initialize using the basic information about your instance including a
+`client_id` and `client_secret` created using
 [custom integrations](https://ghost.org/integrations/custom-integrations/).
 
 ```
@@ -49,7 +50,7 @@ gh.login('username', 'password')
 
 ## Usage
 
-Upload images
+Upload images.
 
 ```
 gh.upload_image('images/image1.jpg', 'test/image1.jpg')
@@ -75,21 +76,21 @@ gh.create_post(post)
 You can use `deploy` to create and test posts locally and then upload to Ghost
 while maintaining a git-like workflow.
 
-Create a post directory substituting `test-post` for your desired post slug.
+Create a post directory substituting your desired slug for `test-post`.
 
 ```
 test-post
 ├── test-post.config
 ├── test-post.md
-├── images
+└── images
    └── image1.jpg
    └── image2.png
 ```
 
-The config file should contain the minimum parameters required for a post
-`title` and `html`. Currently this package only supports HTML posts.
+The config file should contain `title` at minimum. Currently this package only
+supports HTML posts.
 
-Reference all images using relative paths.
+Reference all images using relative paths so that you can test locally.
 
 This is an example config.
 
@@ -103,7 +104,7 @@ This is an example config.
 }
 ```
 
-This is an example post using markdown. `deploy` will convert markdown to HTML.
+This is an example post using markdown.
 
 ```
 ## Title 1
@@ -119,7 +120,7 @@ Please ignore this test image.
 
 Deploy will convert the markdown to HTML, combine it with the config file, then
 upload all of the images and replace the local references with URLs. The post
-will be made available as a draft unless you defines `"status": "published"` in
+will be made available as a draft unless you defined `"status": "published"` in
 the config.
 
 ``` 
