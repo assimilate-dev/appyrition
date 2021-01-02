@@ -124,5 +124,5 @@ will be made available as a draft unless you defined `"status": "published"` in
 the config.
 
 ``` 
-gh.deploy("C:/Users/mtreadwell/Documents/github/frostmaiden/posts/test-post")
+gh.deploy("path/to/test-post")
 ```
