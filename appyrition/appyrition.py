@@ -221,7 +221,7 @@ class Ghost(object):
 
     params = {"source": "html"}
 
-    body = {"posts": [post]}
+    body = {"posts": [post_json]}
 
     response = requests.post(
       url,
