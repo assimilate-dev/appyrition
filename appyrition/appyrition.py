@@ -6,7 +6,6 @@ import logging
 from os import listdir, path
 from jwt import decode
 from markdown import markdown
-from mimetypes import MimeTypes
 
 from .error import GhostException, AppyException
 from .auth import generate_base_url, generate_auth_token
@@ -59,6 +58,13 @@ class Ghost(object):
   deploy(post_dir)
     Gathers post text, config, and images from a directory and uploads the post
   """
+
+  # imported methods
+  from .post import get_post, create_post, delete_post
+  from .page import get_page, create_page, delete_page
+  from .image import upload_image
+  from .site import get_site
+
 
   def __init__(
     self,
@@ -147,149 +153,6 @@ class Ghost(object):
 
     cookie = json.dumps(dict(response.cookies))
     logging.debug("Using session cookies: %s", cookie)
-
-
-  def get_post(self, post=None, search_type="id"):
-
-    """
-    Returns all posts or a filtered list of posts as JSON.
-
-    If left at default, `post == None`, returns a JSON object containing all
-    posts on the site.
-
-    Posts can be filtered by providing either a post ID `search_type='slug'` or
-    a post slug `search_type='id'`.
-
-    Parameters
-    ----------
-    post : str, optional
-      ID or slug used to filter to a specific post
-    search_type : str, optional
-      Indicator for an ID search or a slug search
-    """
-
-    if search_type not in ("id", "slug"):
-      raise ValueError("search_type must be 'id' or 'slug'")
-
-    url = url_join(self.base_url, "posts")
-
-    if search_type == "id":
-      if post is None:
-        pass
-      else:
-        url = url_join(url, post)
-    else:
-      if post is None:
-        raise ValueError(
-          "'Must provide value for post if search_type is 'slug'"
-        )
-      else:
-        url = url_join(url, "slug", post)        
-
-    response = requests.get(url, cookies = self.session)
-
-    if response.status_code != 200:
-      raise GhostException(
-        response.status_code,
-        response.json().get("errors", [])
-      )
-
-    return response
-
-
-  def create_post(self, post_json):
-
-    """
-    Create a post.
-
-    The API only supports uploading posts in mobiledoc or HTML format.
-
-    For the minimum required configuration and appropriate JSON structure for
-    `post_json` refer to the 'Source HTML' subsection of the 'Creating a Post'
-    section of the Ghost Admin API docs:
-    https://ghost.org/docs/admin-api/#creating-a-post
-
-    This package currently only supports uploading posts as HTML. To convert
-    from Markdown to HTML, use `from markdown import markdown`.
-    Parameters
-    ----------
-    post_json : dict, optional
-      Post JSON object
-    """
-
-    url = url_join(self.base_url, "posts")
-
-    params = {"source": "html"}
-
-    body = {"posts": [post_json]}
-
-    response = requests.post(
-      url,
-      params = params,
-      json = body,
-      cookies = self.session
-    )
-
-    if response.status_code != 201:
-      raise GhostException(
-        response.status_code,
-        response.json().get("errors", [])
-      )
-
-    return response
-
-
-  def delete_post(self, post):
-
-    """
-    Remove a post by post ID.
-
-    The API does not support removing a post by slug.
-
-    Parameters
-    ----------
-    post : str, optional
-      Post ID
-    """
-
-    url = url_join(self.base_url, "posts", post)
-
-    response = requests.delete(url, cookies = self.session)
-
-    return response
-
-
-  def upload_image(self, file, ref):
-
-    """
-    Upload an image to be referenced by URL.
-
-    The API does not support removing a post by slug.
-
-    Parameters
-    ----------
-    file : str, optional
-      Path to image file
-    ref : str
-      A reference for the image useful for finding images after uploads
-    """
-
-    url = url_join(self.base_url, "images", "upload")
-
-    mime_type = MimeTypes().guess_type(file)[0]
-    logging.debug("Using image mime type %s", mime_type)
-
-    with open(file, "rb") as image:
-      files = {"file": (file, image, mime_type), "ref": (None, ref, None)}
-      response = requests.post(url, files = files, cookies = self.session)
-
-    if response.status_code != 201:
-      raise GhostException(
-        response.status_code,
-        response.json().get("errors", [])
-      )
-    
-    return response
 
 
   def deploy(self, post_dir):
