@@ -1,6 +1,6 @@
 # post.py
 
-from .post_and_page import get_p, create_p, delete_p
+from .post_and_page import _get, _create, _delete
 
 
 def get_post(self, post=None, search_type="id"):
@@ -22,12 +22,12 @@ def get_post(self, post=None, search_type="id"):
     Indicator for an ID search or a slug search
   """
 
-  response = get_p(
+  response = _get(
     post,
     search_type,
     self.base_url,
     self.session,
-    get_type = "posts"
+    resource_type = "posts"
   )
 
   return response
@@ -53,11 +53,11 @@ def create_post(self, post_json):
     Post JSON object
   """
 
-  response = create_p(
+  response = _create(
     post_json,
     self.base_url,
     self.session,
-    get_type = "posts"
+    resource_type = "posts"
   )
 
   return response
@@ -76,6 +76,11 @@ def delete_post(self, post):
     Post ID
   """
 
-  response = delete_p(post, self.base_url, self.session, get_type = "posts")
+  response = _delete(
+    post,
+    self.base_url,
+    self.session,
+    resource_type = "posts"
+  )
 
   return response

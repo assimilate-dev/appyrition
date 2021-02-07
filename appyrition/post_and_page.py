@@ -1,15 +1,16 @@
-# post_and_page.py
+# post_andage.py
 
 import requests
-from .error import GhostException
+import json
+from .error import GhostException, AppyException
 from .helpers import url_join
 
 
-def get_p(post, search_type, base_url, session, get_type):
+def _get(post, search_type, base_url, session, resource_type):
   if search_type not in ("id", "slug"):
     raise ValueError("search_type must be 'id' or 'slug'")
 
-  url = url_join(base_url, get_type)
+  url = url_join(base_url, resource_type)
 
   if search_type == "id":
     if post is None:
@@ -35,11 +36,9 @@ def get_p(post, search_type, base_url, session, get_type):
   return response
 
 
-def create_p(post_json, base_url, session, get_type):
-  url = url_join(base_url, get_type)
-
+def _create(post_json, base_url, session, resource_type):
+  url = url_join(base_url, resource_type)
   params = {"source": "html"}
-
   body = {"posts": [post_json]}
 
   response = requests.post(
@@ -58,8 +57,8 @@ def create_p(post_json, base_url, session, get_type):
   return response
 
 
-def delete_p(post, base_url, session, get_type):
-  url = url_join(base_url, get_type, post)
+def _delete(post, base_url, session, resource_type):
+  url = url_join(base_url, resource_type, post)
 
   response = requests.delete(url, cookies = session)
 

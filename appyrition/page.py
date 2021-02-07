@@ -1,6 +1,6 @@
 # page.py
 
-from .post_and_page import get_p, create_p, delete_p
+from .post_and_page import _get, _create, _delete
 
 
 def get_page(self, page=None, search_type="id"):
@@ -22,12 +22,12 @@ def get_page(self, page=None, search_type="id"):
     Indicator for an ID search or a slug search
   """
 
-  response = get_p(
+  response = _get(
     page,
     search_type,
     self.base_url,
     self.session,
-    get_type = "pages"
+    resource_type = "pages"
   )
 
   return response
@@ -53,11 +53,11 @@ def create_page(self, page_json):
     Page JSON object
   """
 
-  response = create_p(
+  response = _create(
     page_json,
     self.base_url,
     self.session,
-    get_type = "pages"
+    resource_type = "pages"
   )
 
   return response
@@ -76,6 +76,11 @@ def delete_page(self, page):
     Page ID
   """
 
-  response = delete_p(page, self.base_url, self.session, get_type = "pages")
+  response = _delete(
+    page,
+    self.base_url,
+    self.session,
+    resource_type = "pages"
+  )
 
   return response
