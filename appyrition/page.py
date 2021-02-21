@@ -1,6 +1,6 @@
 # page.py
 
-from .post_and_page import _get, _create, _delete
+from .post_and_page import _get, _create, _delete, _update, _deploy
 
 
 def get_page(self, page=None, search_type="id"):
@@ -23,6 +23,23 @@ def get_page(self, page=None, search_type="id"):
   """
 
   response = _get(
+    page,
+    search_type,
+    self.base_url,
+    self.session,
+    resource_type = "pages"
+  )
+
+  return response
+
+
+def update_page(self, new_page_json, page, search_type="id"):
+
+  """
+  """
+
+  response = _update(
+    new_page_json,
     page,
     search_type,
     self.base_url,
@@ -81,6 +98,16 @@ def delete_page(self, page):
     self.base_url,
     self.session,
     resource_type = "pages"
+  )
+
+  return response
+
+
+def deploy_page(self, page_dir, update=False):
+  response = _deploy(
+    page_dir,
+    "pages",
+    update
   )
 
   return response

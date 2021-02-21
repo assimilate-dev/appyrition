@@ -1,6 +1,6 @@
 # post.py
 
-from .post_and_page import _get, _create, _delete
+from .post_and_page import _get, _create, _delete, _update, _deploy
 
 
 def get_post(self, post=None, search_type="id"):
@@ -47,6 +47,7 @@ def create_post(self, post_json):
 
   This package currently only supports uploading posts as HTML. To convert
   from Markdown to HTML, use `from markdown import markdown`.
+
   Parameters
   ----------
   post_json : dict, optional
@@ -55,6 +56,40 @@ def create_post(self, post_json):
 
   response = _create(
     post_json,
+    self.base_url,
+    self.session,
+    resource_type = "posts"
+  )
+
+  
+
+  return response
+
+
+def update_post(self, new_post_json, post, search_type="id"):
+
+  """
+  Update a post in place.
+
+  Existing post JSON is updated using dictionary `update()` method with new
+  post JSON.
+
+  Refer to valid post format: https://ghost.org/docs/admin-api/#the-post-object
+
+  Parameters
+  ----------
+  new_post_json: dict
+    The new post JSON
+  post : str, optional
+    ID or slug used to filter to a specific post
+  search_type : str, optional
+    Indicator for an ID search or a slug search
+  """
+
+  response = _update(
+    new_post_json,
+    post,
+    search_type,
     self.base_url,
     self.session,
     resource_type = "posts"
@@ -81,6 +116,16 @@ def delete_post(self, post):
     self.base_url,
     self.session,
     resource_type = "posts"
+  )
+
+  return response
+
+
+def deploy_post(self, post_dir, update=False):
+  response = _deploy(
+    post_dir,
+    "posts",
+    update
   )
 
   return response
