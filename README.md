@@ -20,7 +20,7 @@ This package is not tested for production and is still in development. It will
 remain on Github only until it is ready to be published.
 
 ```
-pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9000#egg=appyrition
+pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9010#egg=appyrition
 ```
 
 ## Initialize
@@ -73,8 +73,9 @@ gh.create_post(post)
 
 ## Deploy
 
-You can use `deploy` to create and test posts locally and then upload to Ghost
-while maintaining a git-like workflow.
+You can use `deploy_post` or `deploy_page` to create or update posts and pages
+that you have created and tested locally and then upload to Ghost while
+maintaining a git-like workflow.
 
 Create a post directory substituting your desired slug for `test-post`.
 
@@ -119,10 +120,17 @@ Please ignore this test image.
 ```
 
 Deploy will convert the markdown to HTML, combine it with the config file, then
-upload all of the images and replace the local references with URLs. The post
-will be made available as a draft unless you defined `"status": "published"` in
-the config.
+upload all of the images and replace the local references with URLs. The
+page/post will be made available as a draft unless you defined
+`"status": "published"` in the config.
 
 ``` 
-gh.deploy("path/to/test-post")
+gh.deploy_post("path/to/test-post")
+```
+
+To update an existing post you've already deployed using `deploy_post` or
+`deploy_page`, set `update = True`:
+
+```
+gh.deploy_post("path/to/test-post", update = True)
 ```

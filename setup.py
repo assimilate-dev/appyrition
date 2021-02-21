@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="appyrition",
-    version="0.0.9000",
+    version="0.0.9010",
     author="Michael Treadwell",
     author_email="mich@eltreadwell.com",
     packages=["appyrition"],
