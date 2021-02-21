@@ -14,6 +14,9 @@ and git then deploy to Ghost without copying and pasting into the Ghost editor.
 This module is tested only against V3 of the [Ghost Admin
 API](https://ghost.org/docs/faq/api-versioning/).
 
+If you have questions and would like a chance (no promises) at a more immediate
+answer. Join me on [IRC](https://irc.assimilate.dev/).
+
 ## Installation
 
 This package is not tested for production and is still in development. It will
