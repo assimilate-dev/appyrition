@@ -58,8 +58,8 @@ class Ghost(object):
   """
 
   # imported methods
-  from .post import get_post, create_post, delete_post, update_post
-  from .page import get_page, create_page, delete_page
+  from .post import get_post, create_post, delete_post, update_post, deploy_post
+  from .page import get_page, create_page, delete_page, update_page, deploy_page
   from .image import upload_image
   from .site import get_site
 
@@ -151,3 +151,5 @@ class Ghost(object):
 
     cookie = json.dumps(dict(response.cookies))
     logging.debug("Using session cookies: %s", cookie)
+
+    return response

@@ -1,9 +1,10 @@
 # page.py
 
-from .post_and_page import _get, _create, _delete, _update, _deploy
+from .post_and_page import _get, _create, _delete, _update
+from .deploy import _deploy
 
 
-def get_page(self, page=None, search_type="id"):
+def get_page(self, page=None, search_type="id", params=dict()):
 
   """
   Returns all pages or a filtered list of pages as JSON.
@@ -25,6 +26,7 @@ def get_page(self, page=None, search_type="id"):
   response = _get(
     page,
     search_type,
+    params,
     self.base_url,
     self.session,
     resource_type = "pages"
@@ -107,6 +109,8 @@ def deploy_page(self, page_dir, update=False):
   response = _deploy(
     page_dir,
     "pages",
+    self.base_url,
+    self.session,
     update
   )
 
