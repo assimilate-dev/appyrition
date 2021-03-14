@@ -1,9 +1,10 @@
 # post.py
 
-from .post_and_page import _get, _create, _delete, _update, _deploy
+from .post_and_page import _get, _create, _delete, _update
+from .deploy import _deploy
 
 
-def get_post(self, post=None, search_type="id"):
+def get_post(self, post=None, search_type="id", params = dict()):
 
   """
   Returns all posts or a filtered list of posts as JSON.
@@ -25,6 +26,7 @@ def get_post(self, post=None, search_type="id"):
   response = _get(
     post,
     search_type,
+    params,
     self.base_url,
     self.session,
     resource_type = "posts"
@@ -125,6 +127,8 @@ def deploy_post(self, post_dir, update=False):
   response = _deploy(
     post_dir,
     "posts",
+    self.base_url,
+    self.session,
     update
   )
 
