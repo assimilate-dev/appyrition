@@ -23,7 +23,7 @@ This package is not tested for production and is still in development. It will
 remain on Github only until it is ready to be published.
 
 ```
-pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9010#egg=appyrition
+pip install -e git://github.com/assimilate-dev/appyrition.git@v0.0.9020#egg=appyrition
 ```
 
 ## Initialize
@@ -53,6 +53,35 @@ gh.login('username', 'password')
 
 ## Usage
 
+### Post and page resources
+
+There are four methods each to interact with posts and pages.
+
+**Posts**
+- get_post(post, search_type, params)
+- create_post(post_json)
+- update_post(new_post_json, page, search_type)
+- delete_post(post)
+
+**Pages**
+- get_page()
+- create_page()
+- update_page()
+- delete_page()
+
+```
+post = {
+  "title": "Test Post",
+  "custom_excerpt": "Please ignore",
+  "slug": "test-post",
+  "html": "<h2>Title 1</h2>\n<p>Test post</p>"
+}
+
+gh.create_post(post)
+```
+
+### Images
+
 Upload images.
 
 ```
@@ -76,7 +105,9 @@ gh.create_post(post)
 
 ## Deploy
 
-You can use `deploy_post` or `deploy_page` to create or update posts and pages
+### Create
+
+You can use `deploy_post` or `deploy_page` to create posts and pages
 that you have created and tested locally and then upload to Ghost while
 maintaining a git-like workflow.
 

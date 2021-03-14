@@ -12,15 +12,17 @@ def get_post(self, post=None, search_type="id", params = dict()):
   If left at default, `post == None`, returns a JSON object containing all
   posts on the site.
 
-  Posts can be filtered by providing either a post ID `search_type='slug'` or
+  posts can be filtered by providing either a post ID `search_type='slug'` or
   a post slug `search_type='id'`.
 
   Parameters
   ----------
-  post : str, optional
+  post : str
     ID or slug used to filter to a specific post
-  search_type : str, optional
+  search_type : str
     Indicator for an ID search or a slug search
+  params : dict
+    Search params for filtering
   """
 
   response = _get(
@@ -40,10 +42,12 @@ def create_post(self, post_json):
   """
   Create a post.
 
+  See `deploy_post()` before manually creating posts.
+
   The API only supports uploading posts in mobiledoc or HTML format.
 
   For the minimum required configuration and appropriate JSON structure for
-  `post_json` refer to the 'Source HTML' subsection of the 'Creating a Post'
+  `post_json` refer to the 'Source HTML' subsection of the 'Creating a post'
   section of the Ghost Admin API docs:
   https://ghost.org/docs/admin-api/#creating-a-post
 
@@ -52,8 +56,8 @@ def create_post(self, post_json):
 
   Parameters
   ----------
-  post_json : dict, optional
-    Post JSON object
+  post_json : dict
+    post JSON object
   """
 
   response = _create(
@@ -73,6 +77,8 @@ def update_post(self, new_post_json, post, search_type="id"):
   """
   Update a post in place.
 
+  See `deploy_post(update=True)` before manually updating posts.
+
   Existing post JSON is updated using dictionary `update()` method with new
   post JSON.
 
@@ -82,7 +88,7 @@ def update_post(self, new_post_json, post, search_type="id"):
   ----------
   new_post_json: dict
     The new post JSON
-  post : str, optional
+  post : str
     ID or slug used to filter to a specific post
   search_type : str, optional
     Indicator for an ID search or a slug search
@@ -109,8 +115,8 @@ def delete_post(self, post):
 
   Parameters
   ----------
-  post : str, optional
-    Post ID
+  post : str
+    post ID
   """
 
   response = _delete(
@@ -123,7 +129,21 @@ def delete_post(self, post):
   return response
 
 
-def deploy_post(self, post_dir, update=False):
+def deploy_post(self, post_dir = ".", update=False):
+
+  """
+  Create or update a post from markdown and config files in a directory.
+
+  See README for more details.
+
+  Parameters
+  ----------
+  post_dir : str
+    Directory containing post files
+  update : bool
+    If true, update an existing post. If false, create new post.
+  """
+
   response = _deploy(
     post_dir,
     "posts",

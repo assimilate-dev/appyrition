@@ -17,10 +17,12 @@ def get_page(self, page=None, search_type="id", params=dict()):
 
   Parameters
   ----------
-  page : str, optional
+  page : str
     ID or slug used to filter to a specific page
-  search_type : str, optional
+  search_type : str
     Indicator for an ID search or a slug search
+  params : dict
+    Search params for filtering
   """
 
   response = _get(
@@ -38,6 +40,23 @@ def get_page(self, page=None, search_type="id", params=dict()):
 def update_page(self, new_page_json, page, search_type="id"):
 
   """
+  Update a page in place.
+
+  See `deploy_page(update=True)` before manually updating pages.
+
+  Existing page JSON is updated using dictionary `update()` method with new
+  page JSON.
+
+  Refer to valid page format: https://ghost.org/docs/admin-api/#the-page-object
+
+  Parameters
+  ----------
+  new_page_json: dict
+    The new page JSON
+  page : str
+    ID or slug used to filter to a specific page
+  search_type : str, optional
+    Indicator for an ID search or a slug search
   """
 
   response = _update(
@@ -57,6 +76,8 @@ def create_page(self, page_json):
   """
   Create a page.
 
+  See `deploy_page()` before manually creating pages.
+
   The API only supports uploading pages in mobiledoc or HTML format.
 
   For the minimum required configuration and appropriate JSON structure for
@@ -66,9 +87,10 @@ def create_page(self, page_json):
 
   This package currently only supports uploading pages as HTML. To convert
   from Markdown to HTML, use `from markdown import markdown`.
+
   Parameters
   ----------
-  page_json : dict, optional
+  page_json : dict
     Page JSON object
   """
 
@@ -91,7 +113,7 @@ def delete_page(self, page):
 
   Parameters
   ----------
-  page : str, optional
+  page : str
     Page ID
   """
 
@@ -105,7 +127,21 @@ def delete_page(self, page):
   return response
 
 
-def deploy_page(self, page_dir, update=False):
+def deploy_page(self, page_dir = ".", update=False):
+
+  """
+  Create or update a page from markdown and config files in a directory.
+
+  See README for more details.
+
+  Parameters
+  ----------
+  page_dir : str
+    Directory containing page files
+  update : bool
+    If true, update an existing page. If false, create new page.
+  """
+
   response = _deploy(
     page_dir,
     "pages",
